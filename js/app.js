@@ -4,6 +4,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 var c = canvas.getContext('2d');
+var w = 100;
 
 var mouse = {
     x: undefined,
@@ -49,19 +50,33 @@ function Circle(x, y, radius, color) {
     }  
 }
 
-var circle1 = new Circle(canvas.width/2, canvas.height/2, 100, "black");
-var circle2 = new Circle(50, 50, 50, "blue");
+var circle1;
+var circle2;
 
 function init(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    if(canvas.height < canvas.width){
+        w = canvas.height/4;
+    } else {
+        w = canvas.width/4;
+    }
+
+    circle1 = new Circle(canvas.width/2, canvas.height/2, w, "black");
+    circle2 = new Circle(50, 50, w/2, "blue");
+
     circle1.update();
     circle2.update();
 }
+
+window.addEventListener('resize', init);
 
 function animate(){
     requestAnimationFrame(animate);
     c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    if(getDistance(circle1.x, circle2.x, circle1.y, circle2.y) < 150)
+    if(getDistance(circle1.x, circle2.x, circle1.y, circle2.y) < circle1.radius + circle2.radius)
         circle1.color = "red";
     else
         circle1.color = "black";
